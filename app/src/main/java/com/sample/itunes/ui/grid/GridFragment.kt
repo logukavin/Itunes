@@ -61,7 +61,7 @@ class GridFragment : BaseFragment<FragmentGridBinding>() {
 
                         for (i in state.data.results!!) {
                             val childItem = ChildItem(
-                                i!!.collectionCensoredName.toString(), i.artworkUrl100.toString()
+                                i!!.collectionCensoredName.toString(),i.artistName.toString(),i.previewUrl.toString(),i.primaryGenreName.toString(),i.longDescription.toString(), i.artworkUrl100.toString()
                             )
 
                             val parentKind = i.kind.toString()

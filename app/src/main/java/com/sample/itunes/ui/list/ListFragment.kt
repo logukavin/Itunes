@@ -8,16 +8,13 @@ import androidx.lifecycle.lifecycleScope
 import com.sample.itunes.R
 import com.sample.itunes.databinding.FragmentListBinding
 import com.sample.itunes.model.ChildItem
-import com.sample.itunes.model.ParentItem
 import com.sample.itunes.networkhelper.NoInternetException
 import com.sample.itunes.ui.base.BaseFragment
 import com.sample.itunes.ui.base.UIState
-import com.sample.itunes.ui.grid.GridListAdapter
 import com.sample.itunes.utils.CommonUI
 import com.sample.itunes.utils.CommonUI.showGone
 import com.sample.itunes.utils.CommonUI.showVisible
 import com.sample.itunes.viewmodel.GridViewModel
-import com.sample.itunes.viewmodel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -50,7 +47,7 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
 
                     is UIState.Failure -> {
                         binding.progress.showGone()
-                        binding.progress.visibility= View.VISIBLE
+                        binding.progress.visibility = View.VISIBLE
                         val errorText = when (state.throwable) {
                             is NoInternetException -> R.string.no_internet_available
                             else -> R.string.something_went_wrong_try_again
@@ -60,13 +57,12 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
 
                     is UIState.Success -> {
                         binding.progress.showGone()
-                        // Process the data and prepare it for the adapter
                         val uniqueChildItemList = mutableMapOf<String, MutableList<ChildItem>>()
                         val uniqueList = mutableListOf<String>()
 
                         for (i in state.data.results!!) {
                             val childItem = ChildItem(
-                                i!!.collectionCensoredName.toString(), i.artworkUrl100.toString()
+                                i!!.collectionCensoredName.toString(),i.artistName.toString(),i.previewUrl.toString(),i.primaryGenreName.toString(),i.longDescription.toString(), i.artworkUrl100.toString()
                             )
 
                             val parentKind = i.kind.toString()
