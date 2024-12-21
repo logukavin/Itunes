@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ITunes</string>
+    <string name="something_went_wrong_try_again">Something went wrong try again</string>
+    <string name="no_internet_available">No internet available</string>
+    <string name="itunes">iTunes</string>
+    <string name="media">Media</string>
+    <string name="grid_layout">Grid Layout</string>
+    <string name="list_layout">List Layout</string>
+</resources>
