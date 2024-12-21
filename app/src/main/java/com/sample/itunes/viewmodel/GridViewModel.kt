@@ -28,14 +28,14 @@ class GridViewModel @Inject constructor(
     private val _allResponse = MutableStateFlow<UIState<AllResponse>>(UIState.Loading)
     val allResponse: StateFlow<UIState<AllResponse>> = _allResponse
 
-//    private val mediaTypes = listOf(
-//        "music", "movie", "podcast", "audiobook", "software",
-//        "ebook", "tvShow", "musicVideo", "shortFilm"
-//    )
-
     private val mediaTypes = listOf(
-        "music"
+        "music", "movie", "podcast", "audiobook", "software",
+        "ebook", "tvShow", "musicVideo", "shortFilm"
     )
+
+//    private val mediaTypes = listOf(
+//        "music"
+//    )
 
     init {
         getSearchDetailsSequentially()

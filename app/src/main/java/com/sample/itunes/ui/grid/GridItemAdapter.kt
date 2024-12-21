@@ -15,31 +15,36 @@ class GridItemAdapter (private val parentItems: List<ParentItem>) : RecyclerView
     private val childType = 1
 
     override fun getItemCount(): Int {
-        var count = 0
-        parentItems.forEach { parent ->
-            count += 1 // For the parent item
-            if (parent.isExpanded) {
-                count += parent.children.size
-            }
-        }
-        return count
+//        var count = 0
+//        parentItems.forEach { parent ->
+//            count += 1 // For the parent item
+//            if (parent.isExpanded) {
+//                count += parent.children.size
+//            }
+//        }
+        return 11
     }
 
     override fun getItemViewType(position: Int): Int {
-        var currentPos = position
-        for (parent in parentItems) {
-            if (currentPos == 0) {
-                return parentType
-            }
-            currentPos -= 1
-            if (parent.isExpanded) {
-                val childCount = parent.children.size
-                if (currentPos < childCount) {
-                    return childType
-                }
-                currentPos -= childCount
-            }
+        val currentPos = position
+        if (currentPos == 0) {
+            return parentType
+        }else{
+            return childType
         }
+//        for (parent in parentItems) {
+//            if (currentPos == 0) {
+//                return parentType
+//            }
+//            currentPos -= 1
+//            if (parent.isExpanded) {
+//                val childCount = parent.children.size
+//                if (currentPos < childCount) {
+//                    return childType
+//                }
+//                currentPos -= childCount
+//            }
+//        }
         return parentType
     }
 
@@ -62,28 +67,31 @@ class GridItemAdapter (private val parentItems: List<ParentItem>) : RecyclerView
         fun bind(childItem: List<ChildItem>) {
             val gridListAdapter = GridListAdapter()
             name.adapter = gridListAdapter
-            gridListAdapter.gridList(childItem)
+            gridListAdapter.setGridList(childItem)
 
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentPos = position
-        for (parent in parentItems) {
+//        for (parent in parentItems) {
             if (currentPos == 0) {
                 (holder as ParentViewHolder).bind(position)
                 return
+            }else{
+                (holder as ChildViewHolder).bind(parentItems[position].children)
+                return
             }
-            currentPos -= 1
-            if (parent.isExpanded) {
-                val childCount = parent.children.size
-                if (currentPos < childCount) {
-                    (holder as ChildViewHolder).bind(parent.children)
-                    return
-                }
-                currentPos -= childCount
-            }
-        }
+//            currentPos -= 1
+//            if (parent.isExpanded) {
+//                val childCount =parent.children.size
+//                if (currentPos < childCount) {
+//                    (holder as ChildViewHolder).bind(parent.children)
+//                    return
+//                }
+//                currentPos -= childCount
+//            }
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

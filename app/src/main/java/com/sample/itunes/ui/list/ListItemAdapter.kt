@@ -10,6 +10,8 @@ import com.sample.itunes.R
 import com.sample.itunes.extensions.loadUrl
 import com.sample.itunes.model.ChildItem
 import com.sample.itunes.model.ParentItem
+import com.sample.itunes.ui.grid.GridItemAdapter.ChildViewHolder
+import com.sample.itunes.ui.grid.GridItemAdapter.ParentViewHolder
 
 class ListItemAdapter(
     private val parentItems: List<ParentItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -19,14 +21,14 @@ class ListItemAdapter(
 
     // Get item count based on parent and child items
     override fun getItemCount(): Int {
-        var count = 0
-        parentItems.forEach { parent ->
-            count += 1 // For the parent item
-            if (parent.isExpanded) {
-                count += parent.children.size // Add child items if expanded
-            }
-        }
-        return count
+//        var count = 0
+//        parentItems.forEach { parent ->
+//            count += 1 // For the parent item
+//            if (parent.isExpanded) {
+//                count += parent.children.size // Add child items if expanded
+//            }
+//        }
+        return 11
     }
 
     // Define different types of views (parent and child)
@@ -35,15 +37,17 @@ class ListItemAdapter(
         for (parent in parentItems) {
             if (currentPos == 0) {
                 return parentType
+            }else{
+                return childType
             }
-            currentPos -= 1
-            if (parent.isExpanded) {
-                val childCount = parent.children.size
-                if (currentPos < childCount) {
-                    return childType
-                }
-                currentPos -= childCount
-            }
+//            currentPos -= 1
+//            if (parent.isExpanded) {
+//                val childCount = parent.children.size
+//                if (currentPos < childCount) {
+//                    return childType
+//                }
+//                currentPos -= childCount
+//            }
         }
         return parentType
     }
@@ -75,22 +79,31 @@ class ListItemAdapter(
 
     // Bind data to ViewHolders
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        var currentPos = position
-        for (parent in parentItems) {
-            if (currentPos == 0) {
-                (holder as ParentViewHolder).bind(position)
-                return
-            }
-            currentPos -= 1
-            if (parent.isExpanded) {
-                val childCount = parent.children.size
-                if (currentPos < childCount) {
-                    (holder as ChildViewHolder).bind(parent.children[currentPos])
-                    return
-                }
-                currentPos -= childCount
-            }
+        val currentPos = position
+        if (currentPos == 0) {
+            (holder as ParentViewHolder).bind(position)
+            return
+        }else{
+            (holder as ChildViewHolder).bind(parentItems[0].children[position-1])
+            return
         }
+
+//        var currentPos = position
+//        for (parent in parentItems) {
+//            if (currentPos == 0) {
+//                (holder as ParentViewHolder).bind(position)
+//                return
+//            }
+//            currentPos -= 1
+//            if (parent.isExpanded) {
+//                val childCount = parent.children.size
+//                if (currentPos < childCount) {
+//                    (holder as ChildViewHolder).bind(parent.children[currentPos])
+//                    return
+//                }
+//                currentPos -= childCount
+//            }
+//        }
     }
 
     // Create the appropriate ViewHolder based on item view type

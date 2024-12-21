@@ -24,13 +24,19 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class GridFragment : BaseFragment<FragmentGridBinding>() {
     private val listViewModel: GridViewModel by viewModels()
-    private lateinit var adapter: GridItemAdapter
+    private lateinit var adapter: MyExpandableListAdapter
+//    private val expandedGroups = mutableSetOf<Int>()
+
     override fun inflateViewBinding(inflater: LayoutInflater): FragmentGridBinding =
         FragmentGridBinding.inflate(inflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+//        binding.expandableListView.setOnGroupExpandListener { groupPosition ->
+//            expandedGroups.add(groupPosition)
+//        }
         lifecycleScope.launch {
             listViewModel.allResponse.collect { state ->
                 when (state) {
@@ -47,33 +53,34 @@ class GridFragment : BaseFragment<FragmentGridBinding>() {
                     }
 
                     is UIState.Success -> {
-                        val uniqueChildItemList = mutableListOf<ChildItem>()
-                        val uniqueList = mutableListOf<ParentItem>()
-
+                        val uniqueChildItemList = mutableMapOf<String, MutableList<ChildItem>>()
+                        val uniqueList = mutableListOf<String>()
                         for (i in state.data.results!!) {
-                            // Create ChildItem for each result
                             val childItem = ChildItem(
                                 i!!.collectionCensoredName.toString(),
                                 i.artworkUrl100.toString()
                             )
 
-                            if (!uniqueChildItemList.contains(childItem)) {
-                                uniqueChildItemList.add(childItem)
-                            }
-
-                            val parentItem = ParentItem(
-                                i.kind.toString(),
-                                true, // Assuming this flag is required for each ParentItem
-                                uniqueChildItemList
-                            )
-                            if (!uniqueList.any { it.kind == parentItem.kind }) {
-                                uniqueList.add(parentItem)
+                            val parentKind = i.kind.toString()
+                            if (!uniqueList.contains(parentKind)) {
+                                uniqueList.add(parentKind)
+                                val childItemList = mutableListOf(childItem)
+                                uniqueChildItemList[parentKind] = childItemList
+                            } else {
+                                uniqueChildItemList[parentKind]?.add(childItem)
                             }
                         }
-                        Log.d("uniqueList",uniqueList.size.toString())
+                        Log.d("uniqueList", uniqueList.size.toString())
+                        Log.d("uniqueList", uniqueChildItemList.size.toString())
 
-                        adapter = GridItemAdapter(uniqueList)
-                        binding.rvGrid.adapter = adapter
+                        // Create the adapter with the uniqueList and uniqueChildItemList
+                        val adapter = MyExpandableListAdapter(requireContext(), uniqueList, uniqueChildItemList)
+                        binding.expandableListView.setAdapter(adapter)
+//                        for (i in 0 until adapter.groupCount) {
+//                            if (expandedGroups.contains(i)) {
+//                                binding.expandableListView.expandGroup(i)
+//                            }
+//                        }
                     }
 
                     else -> {

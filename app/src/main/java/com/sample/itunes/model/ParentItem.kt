@@ -2,7 +2,6 @@ package com.sample.itunes.model
 
 data class ParentItem(
     val kind: String,
-    val isExpanded: Boolean,
     val children: List<ChildItem>
 ) {
     // Override equals and hashCode to compare based on relevant fields

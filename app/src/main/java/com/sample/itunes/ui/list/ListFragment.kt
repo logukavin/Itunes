@@ -57,7 +57,6 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
                             }
                             val parentItem = ParentItem(
                                 i.kind.toString(),
-                                true,
                                 uniqueChildItemList
                             )
 

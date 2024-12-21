@@ -11,40 +11,41 @@ import javax.inject.Inject
 class GridListAdapter @Inject constructor() :
     RecyclerView.Adapter<GridListAdapter.GridViewHolder>() {
 
-    var childItem = mutableListOf<ChildItem>()
+    private var childItem = mutableListOf<ChildItem>()
     private var clickInterface: ClickInterface<ChildItem>? = null
 
-    fun gridList(childItems: List<ChildItem>) {
+    fun setGridList(childItems: List<ChildItem>) {
         childItem.clear()
-        childItem.addAll( childItems.toMutableList())
-       notifyDataSetChanged()
+        childItem.addAll(childItems)
+        notifyDataSetChanged()
     }
 
     interface ClickInterface<T> {
         fun onClick(data: T)
     }
 
+    class GridViewHolder(val view: ItemGridBinding) : RecyclerView.ViewHolder(view.root)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
-        return GridViewHolder(
-            ItemGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        val binding = ItemGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GridViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
         val childItems = childItem[position]
         holder.view.tvName.text = childItems.collectionName
         holder.view.imgMovie.loadUrl(childItems.artworkUrl)
-
+        holder.itemView.setOnClickListener {
+            clickInterface?.onClick(childItems)
+        }
     }
 
     override fun getItemCount(): Int {
         return childItem.size
     }
-
     fun setItemClick(clickInterface: ClickInterface<ChildItem>) {
         this.clickInterface = clickInterface
     }
-
-    class GridViewHolder(val view: ItemGridBinding) : RecyclerView.ViewHolder(view.root)
 }
+
 
