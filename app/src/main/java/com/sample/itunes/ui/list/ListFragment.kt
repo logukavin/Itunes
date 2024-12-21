@@ -2,6 +2,7 @@ package com.sample.itunes.ui.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.sample.itunes.R
@@ -11,15 +12,20 @@ import com.sample.itunes.model.ParentItem
 import com.sample.itunes.networkhelper.NoInternetException
 import com.sample.itunes.ui.base.BaseFragment
 import com.sample.itunes.ui.base.UIState
+import com.sample.itunes.ui.grid.GridListAdapter
 import com.sample.itunes.utils.CommonUI
+import com.sample.itunes.utils.CommonUI.showGone
+import com.sample.itunes.utils.CommonUI.showVisible
+import com.sample.itunes.viewmodel.GridViewModel
 import com.sample.itunes.viewmodel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListFragment : BaseFragment<FragmentListBinding>() {
-    private val listViewModel: ListViewModel by viewModels()
-    private lateinit var adapter: ListItemAdapter
+    private val listViewModel: GridViewModel by viewModels()
+    private lateinit var adapter: ListAdapter
+    private val expandedGroups = mutableSetOf<Int>()
 
     override fun inflateViewBinding(inflater: LayoutInflater): FragmentListBinding =
         FragmentListBinding.inflate(inflater)
@@ -27,17 +33,24 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        adapter = ListItemAdapter(emptyList())
-        binding.rvList.adapter = adapter
+        binding.exList.setOnGroupExpandListener { groupPosition ->
+            expandedGroups.add(groupPosition)
+        }
+
+        binding.exList.setOnGroupCollapseListener { groupPosition ->
+            expandedGroups.remove(groupPosition)
+        }
 
         lifecycleScope.launch {
             listViewModel.allResponse.collect { state ->
                 when (state) {
                     is UIState.Loading -> {
-                        // Optionally show a loading indicator
+                        binding.progress.showVisible()
                     }
 
                     is UIState.Failure -> {
+                        binding.progress.showGone()
+                        binding.progress.visibility= View.VISIBLE
                         val errorText = when (state.throwable) {
                             is NoInternetException -> R.string.no_internet_available
                             else -> R.string.something_went_wrong_try_again
@@ -46,36 +59,43 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
                     }
 
                     is UIState.Success -> {
-                        val uniqueChildItemList = mutableListOf<ChildItem>()
-                        val uniqueList = mutableListOf<ParentItem>()
+                        binding.progress.showGone()
+                        // Process the data and prepare it for the adapter
+                        val uniqueChildItemList = mutableMapOf<String, MutableList<ChildItem>>()
+                        val uniqueList = mutableListOf<String>()
 
                         for (i in state.data.results!!) {
-                            val childItem = ChildItem(i!!.collectionCensoredName.toString(), i.artworkUrl100.toString())
-
-                            if (!uniqueChildItemList.contains(childItem)) {
-                                uniqueChildItemList.add(childItem)
-                            }
-                            val parentItem = ParentItem(
-                                i.kind.toString(),
-                                uniqueChildItemList
+                            val childItem = ChildItem(
+                                i!!.collectionCensoredName.toString(), i.artworkUrl100.toString()
                             )
 
-                            if (!uniqueList.any { it.kind == parentItem.kind }) {
-                                uniqueList.add(parentItem)
+                            val parentKind = i.kind.toString()
+                            if (!uniqueList.contains(parentKind)) {
+                                uniqueList.add(parentKind)
+                                val childItemList = mutableListOf(childItem)
+                                uniqueChildItemList[parentKind] = childItemList
+                            } else {
+                                uniqueChildItemList[parentKind]?.add(childItem)
                             }
                         }
+                        adapter = ListAdapter(requireContext(), uniqueList, uniqueChildItemList)
+                        binding.exList.setAdapter(adapter)
 
-                        adapter = ListItemAdapter(uniqueList)
-                        binding.rvList.adapter = adapter
+                        for (i in 0 until adapter.groupCount) {
+                            binding.exList.expandGroup(i)
+                        }
+
+                        expandedGroups.forEach { groupPosition ->
+                            binding.exList.expandGroup(groupPosition)
+                        }
                     }
 
-
                     else -> {
+                        binding.progress.showGone()
                         // Handle other states if necessary
                     }
                 }
             }
         }
-
     }
 }

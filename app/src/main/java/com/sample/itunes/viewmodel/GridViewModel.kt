@@ -33,10 +33,6 @@ class GridViewModel @Inject constructor(
         "ebook", "tvShow", "musicVideo", "shortFilm"
     )
 
-//    private val mediaTypes = listOf(
-//        "music"
-//    )
-
     init {
         getSearchDetailsSequentially()
     }

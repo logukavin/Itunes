@@ -10,6 +10,11 @@ object CommonUI {
         Toast.makeText(context, message, duration).show()
     }
 
+    fun capitalizeWords(input: String): String {
+        return input.split("-")
+            .joinToString("-") { it.replaceFirstChar { char -> char.uppercase() } }
+    }
+
     fun View.showVisible() {
         this.visibility = View.VISIBLE
     }
@@ -17,4 +22,5 @@ object CommonUI {
     fun View.showGone() {
         this.visibility = View.GONE
     }
+
 }

@@ -1,51 +1,86 @@
 package com.sample.itunes.ui.grid
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseExpandableListAdapter
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.sample.itunes.databinding.ItemGridBinding
-import com.sample.itunes.extensions.loadUrl
+import com.sample.itunes.R
 import com.sample.itunes.model.ChildItem
-import javax.inject.Inject
+import com.sample.itunes.remote.AppConstants
+import com.sample.itunes.utils.CommonUI.capitalizeWords
 
-class GridListAdapter @Inject constructor() :
-    RecyclerView.Adapter<GridListAdapter.GridViewHolder>() {
 
-    private var childItem = mutableListOf<ChildItem>()
-    private var clickInterface: ClickInterface<ChildItem>? = null
+class GridListAdapter(
+    private val context: Context,
+    private val groupList: List<String>,
+    private val childList: Map<String, List<ChildItem>>
+) : BaseExpandableListAdapter() {
 
-    fun setGridList(childItems: List<ChildItem>) {
-        childItem.clear()
-        childItem.addAll(childItems)
-        notifyDataSetChanged()
+    override fun getGroupCount(): Int {
+        return groupList.size
     }
 
-    interface ClickInterface<T> {
-        fun onClick(data: T)
+    override fun getChildrenCount(groupPosition: Int): Int {
+        return 1
     }
 
-    class GridViewHolder(val view: ItemGridBinding) : RecyclerView.ViewHolder(view.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
-        val binding = ItemGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GridViewHolder(binding)
+    override fun getGroup(groupPosition: Int): Any {
+        return groupList[groupPosition]
     }
 
-    override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
-        val childItems = childItem[position]
-        holder.view.tvName.text = childItems.collectionName
-        holder.view.imgMovie.loadUrl(childItems.artworkUrl)
-        holder.itemView.setOnClickListener {
-            clickInterface?.onClick(childItems)
+    override fun getChild(groupPosition: Int, childPosition: Int): Any {
+        return childList[groupList[groupPosition]]?.get(childPosition) ?: ""
+    }
+
+    override fun getGroupId(groupPosition: Int): Long {
+        return groupPosition.toLong()
+    }
+
+    override fun getChildId(groupPosition: Int, childPosition: Int): Long {
+        return childPosition.toLong()
+    }
+
+    override fun hasStableIds(): Boolean {
+        return true
+    }
+
+    override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
+        var view = convertView
+        if (view == null) {
+            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            view = inflater.inflate(R.layout.item_parent, parent, false)
         }
+
+        val groupName = getGroup(groupPosition) as String
+        val textView = view?.findViewById<TextView>(R.id.parentTitle)
+        textView?.text = capitalizeWords(groupName)
+        return view!!
     }
 
-    override fun getItemCount(): Int {
-        return childItem.size
+    override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
+        var view = convertView
+        if (view == null) {
+            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            view = inflater.inflate(R.layout.item_grid_list, parent, false)
+        }
+
+        val childItem = getChild(groupPosition, childPosition) as ChildItem
+
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.rv_item)
+        val gridListAdapter = GridItemAdapter()
+        recyclerView?.adapter = gridListAdapter
+        val childItemsList = childList[groupList[groupPosition]]
+        if (childItemsList != null) {
+            gridListAdapter.setGridList(childItemsList)  // Assuming you have a submitList function in GridListAdapter
+        }
+
+        return view!!
     }
-    fun setItemClick(clickInterface: ClickInterface<ChildItem>) {
-        this.clickInterface = clickInterface
+
+    override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
+        return true
     }
 }
-
-

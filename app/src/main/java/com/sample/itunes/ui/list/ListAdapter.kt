@@ -1,4 +1,4 @@
-package com.sample.itunes.ui.grid
+package com.sample.itunes.ui.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,12 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sample.itunes.R
 import com.sample.itunes.model.ChildItem
+import com.sample.itunes.remote.AppConstants
+import com.sample.itunes.utils.CommonUI.capitalizeWords
 
-
-class MyExpandableListAdapter(
+class ListAdapter(
     private val context: Context,
-    private val groupList: List<String>, // List of groups (parent items)
-    private val childList: Map<String, List<ChildItem>> // Map of child items for each group
+    private val groupList: List<String>,
+    private val childList: Map<String, List<ChildItem>>
 ) : BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int {
@@ -22,7 +23,7 @@ class MyExpandableListAdapter(
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return groupList.size ?: 0
+        return 1
     }
 
     override fun getGroup(groupPosition: Int): Any {
@@ -45,35 +46,47 @@ class MyExpandableListAdapter(
         return true
     }
 
-    override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
+    override fun getGroupView(
+        groupPosition: Int,
+        isExpanded: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View {
         var view = convertView
         if (view == null) {
-            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val inflater =
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = inflater.inflate(R.layout.item_parent, parent, false)
         }
 
         val groupName = getGroup(groupPosition) as String
         val textView = view?.findViewById<TextView>(R.id.parentTitle)
-        textView?.text = groupName
-
+        textView?.text = capitalizeWords(groupName)
         return view!!
     }
 
-    override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup?): View {
+    override fun getChildView(
+        groupPosition: Int,
+        childPosition: Int,
+        isLastChild: Boolean,
+        convertView: View?,
+        parent: ViewGroup?
+    ): View {
         var view = convertView
         if (view == null) {
-            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            view = inflater.inflate(R.layout.item_result, parent, false)
+            val inflater =
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            view = inflater.inflate(R.layout.item_list_view, parent, false)
         }
 
         val childItem = getChild(groupPosition, childPosition) as ChildItem
 
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.rv_item)
-        val gridListAdapter = GridListAdapter()
-        recyclerView?.adapter = gridListAdapter
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.rv_list_item)
+        val listItemAdapter = ListItemAdapter()
+        recyclerView?.adapter = listItemAdapter
         val childItemsList = childList[groupList[groupPosition]]
         if (childItemsList != null) {
-            gridListAdapter.setGridList(childItemsList)  // Assuming you have a submitList function in GridListAdapter
+            listItemAdapter.setGridList(childItemsList)
         }
 
         return view!!
