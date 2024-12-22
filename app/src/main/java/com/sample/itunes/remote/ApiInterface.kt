@@ -12,13 +12,6 @@ import retrofit2.http.Query
 interface ApiInterface {
 
     @GET(ApiConstants.API_SEARCH)
-    suspend fun getSearchDeatils(
-        @Query(ApiConstants.TERM) term: String,
-        @Query(ApiConstants.MEDIA) media: String,
-        @Query(ApiConstants.LIMIT) limit: String
-    ): Response<ITunesResponse>
-
-    @GET(ApiConstants.API_SEARCH)
     suspend fun getSearchListDeatils(
         @Query(ApiConstants.TERM) term: String,
         @Query(ApiConstants.MEDIA) media: String,

@@ -24,6 +24,16 @@ material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
 
+# Test
+mockitoCore = "3.12.4"
+mockitoKotlin = "4.0.0"
+mockitoInline = "3.12.4"
+
+coroutinesTest = "1.7.0"
+testing = "2.1.0"
+turbine = "1.0.0"
+jupiter = "5.8.2"
+
 # Lifecycle
 lifecyclecommon = "1.1.1"
 lifecyclelivedata = "2.8.7"
@@ -44,8 +54,8 @@ coroutines = "1.8.1"
 # Hilt
 hilt = "2.52"
 
-# Paging
-paging = "3.2.1"
+# Lottie
+lottie = "6.1.0"
 
 # Gson
 gson = "2.11.0"
@@ -55,11 +65,18 @@ coil = "2.6.0"
 
 # Datastore
 datastoreVersion = "1.1.1"
-uiAndroid = "1.7.6"
+junitJupiter = "5.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockito-core = { group = "org.mockito:mockito-core", name = "mockito-core", version.ref = "mockitoCore" }
+mockito-kotlin = { group = "org.mockito.kotlin:mockito-kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-inline = { group = "org.mockito:mockito-inline", name = "mockito-inline", version.ref = "mockitoInline" }
+coroutines-test = { group = "org.jetbrains.kotlinx:kotlinx-coroutines-test", name = "coroutines-test", version.ref = "coroutinesTest" }
+testing = { group = "androidx.arch.core:core-testing", name = "testing", version.ref = "testing" }
+jupiter = { group = "org.junit.jupiter:junit-jupiter-api", name = "jupiter", version.ref = "jupiter" }
+androidx-turbine = { group = "app.cash.turbine:turbine", name = "junit", version.ref = "turbine" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -89,8 +106,8 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 
-# paging
-androidx-paging = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
+# Lottie
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 
 # Gson
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -100,7 +117,7 @@ coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 
 # Datastore
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastoreVersion" }
-androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 
 
 [plugins]

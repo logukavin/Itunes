@@ -28,17 +28,13 @@ android {
                 libs.versions.proguardRulesPro.get()
             )
             buildConfigField("String", "BASE_URL", "\"https://itunes.apple.com/\"")
-            buildConfigField("String", "environment", "\"Release\"")
-            buildConfigField("Boolean", "IS_DEV", "true")
         }
 
 
         debug {
-            val apiKey = project.findProperty("API_KEY")?.toString() ?: "default_key"
-            buildConfigField("String", "API_KEY", "\"$apiKey\"")
+            buildConfigField("String", "API_DOMAIN", "\"itunes.apple.com\"")
+            buildConfigField("String", "SHA_KEY", "\"sha256//jUo8jOXMTRp18hAtq1CpkTwBuw0/ChVLAyEIPhKR3s=\"")
             buildConfigField("String", "BASE_URL", "\"https://itunes.apple.com/\"")
-            buildConfigField("String", "environment", "\"Staging\"")
-            buildConfigField("Boolean", "IS_DEV", "false")
         }
     }
     compileOptions {
@@ -65,10 +61,19 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.ui.android)
+
+    // Test
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.testing)
+    testImplementation(libs.androidx.turbine)
+    testImplementation(libs.jupiter)
+    testImplementation(libs.mockito.inline)
 
     // Lifecycle
     implementation(libs.lifecycle.common)
@@ -92,8 +97,8 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    // paging
-    implementation(libs.androidx.paging)
+    // Lottie
+    implementation(libs.lottie)
 
     // Gson
     implementation(libs.gson)

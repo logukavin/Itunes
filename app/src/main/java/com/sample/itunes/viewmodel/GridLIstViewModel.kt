@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.sample.itunes.dispatcher.DispatcherProvider
 import com.sample.itunes.model.AllResponse
-import com.sample.itunes.model.ResultsItem
 import com.sample.itunes.model.ResultsItems
 import com.sample.itunes.networkhelper.NetworkHelper
 import com.sample.itunes.networkhelper.NoInternetException
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GridViewModel @Inject constructor(
+class GridLIstViewModel @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val networkHelper: NetworkHelper,
 ) : BaseViewModel() {
@@ -64,7 +63,6 @@ class GridViewModel @Inject constructor(
                             allResults.addAll(it)
                         }
                     } catch (e: Exception) {
-                        // Handle individual errors for each mediaType but continue with the rest of the types
                         Log.e("ListViewModel", "Error processing $mediaType", e)
                     }
                 }
@@ -72,7 +70,6 @@ class GridViewModel @Inject constructor(
                 _allResponse.emit(UIState.Success(AllResponse(allResults.size, allResults)))
 
             } catch (e: Exception) {
-                // If there's a failure in the entire process, emit failure
                 _allResponse.emit(UIState.Failure(e))
             }
         }

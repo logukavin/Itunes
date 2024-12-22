@@ -1,6 +1,7 @@
 package com.sample.itunes.application
 
 import android.app.Application
+import android.content.Context
 import com.sample.itunes.preferences.AppPreference
 import dagger.hilt.android.HiltAndroidApp
 
@@ -18,12 +19,15 @@ class AppController : Application() {
         fun getInstance(): AppController? {
             return instance
         }
+        lateinit var appContext: Context
+            private set
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
         appPreference = AppPreference(this)
+        appContext = applicationContext
     }
 
 }

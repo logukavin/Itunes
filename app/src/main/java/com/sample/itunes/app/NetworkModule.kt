@@ -4,6 +4,7 @@ import com.sample.itunes.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.sample.itunes.remote.AppConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,15 +23,15 @@ class NetworkModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
 
-//        val certificatePinner = CertificatePinner.Builder()
-//            .add("itunes.apple.com", "sha256/AAAAAAAAAAAAAAAAAAAAA==")
-//            .build()
+        val certificate = CertificatePinner.Builder()
+            .add(BuildConfig.API_DOMAIN, BuildConfig.SHA_KEY)
+            .build()
         val okHttpBuilder = OkHttpClient.Builder()
         okHttpBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
             .connectTimeout(60L, TimeUnit.SECONDS)
             .readTimeout(60L, TimeUnit.SECONDS)
             .writeTimeout(60L, TimeUnit.SECONDS)
-//            .certificatePinner(certificatePinner)
+            .certificatePinner(certificate)
         return okHttpBuilder.build()
     }
 

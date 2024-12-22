@@ -14,13 +14,13 @@ import com.sample.itunes.ui.base.UIState
 import com.sample.itunes.utils.CommonUI
 import com.sample.itunes.utils.CommonUI.showGone
 import com.sample.itunes.utils.CommonUI.showVisible
-import com.sample.itunes.viewmodel.GridViewModel
+import com.sample.itunes.viewmodel.GridLIstViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListFragment : BaseFragment<FragmentListBinding>() {
-    private val listViewModel: GridViewModel by viewModels()
+    private val listViewModel: GridLIstViewModel by viewModels()
     private lateinit var adapter: ListAdapter
     private val expandedGroups = mutableSetOf<Int>()
 
