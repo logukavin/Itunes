@@ -50,7 +50,7 @@ class GridLIstViewModel @Inject constructor(
             try {
                 for (mediaType in mediaTypes) {
                     try {
-                        val result = appRepo.getSearchListDeatils("The+Beatles", mediaType)
+                        val result = appRepo.getListDeatils("jack+johnson", mediaType)
                             .flowOn(dispatcherProvider.io)
                             .catch { exception ->
                                 Log.e("ListViewModel", "Error fetching data for $mediaType", exception)

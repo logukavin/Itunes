@@ -6,6 +6,13 @@
     <string name="media">Media</string>
     <string name="grid_layout">Grid Layout</string>
     <string name="list_layout">List Layout</string>
+    <string name="preview">Preview</string>
+    <string name="description">Description</string>
     <string name="your_device_is_rooted">Your device is rooted!</string>
     <string name="device_is_not_rooted">Device is not rooted.</string>
+    <string name="Enter_search_name">Enter search name</string>
+    <string name="search">Search</string>
+    <string name="submit">Submit</string>
+    <string name="specify">Specify the parameter for the content to be searched</string>
+    <string name="search_for_a">Search for a variety of content from the iTunes store including iBooks,movies,podcost,music,music videos,and audiobooks.</string>
 </resources>

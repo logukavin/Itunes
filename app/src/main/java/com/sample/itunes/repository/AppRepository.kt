@@ -9,9 +9,16 @@ import javax.inject.Inject
 
 class AppRepository @Inject constructor(private val apiInterface: ApiInterface) {
 
-    suspend fun getSearchListDeatils(term: String, mediaTypes: String): Flow<AllResponse> = flow {
+    suspend fun getSearchList(term: String): Flow<AllResponse> = flow {
         emit(
-            apiInterface.getSearchListDeatils(
+            apiInterface.getSearchList(
+                term)
+        )
+    }
+
+    suspend fun getListDeatils(term: String, mediaTypes: String): Flow<AllResponse> = flow {
+        emit(
+            apiInterface.getListDeatils(
                 term,
                 mediaTypes,
                 ApiConstants.NETWORK_PAGE_LIMIT.toString()

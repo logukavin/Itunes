@@ -2,13 +2,13 @@ package com.sample.itunes.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ITunesResponse(
+data class SearchMediaResponse(
 
 	@field:SerializedName("resultCount")
 	val resultCount: Int? = null,
 
 	@field:SerializedName("results")
-	val results: List<ResultsItem>
+	val results: List<ResultsItem?>? = null
 )
 
 data class ResultsItem(
@@ -24,12 +24,6 @@ data class ResultsItem(
 
 	@field:SerializedName("previewUrl")
 	val previewUrl: String? = null,
-
-	@field:SerializedName("collectionArtistName")
-	val collectionArtistName: String? = null,
-
-	@field:SerializedName("collectionArtistId")
-	val collectionArtistId: Int? = null,
 
 	@field:SerializedName("artistId")
 	val artistId: Int? = null,
@@ -110,5 +104,38 @@ data class ResultsItem(
 	val artistName: String? = null,
 
 	@field:SerializedName("collectionCensoredName")
-	val collectionCensoredName: String? = null
+	val collectionCensoredName: String? = null,
+
+	@field:SerializedName("collectionArtistName")
+	val collectionArtistName: String? = null,
+
+	@field:SerializedName("longDescription")
+	val longDescription: String? = null,
+
+	@field:SerializedName("trackHdRentalPrice")
+	val trackHdRentalPrice: Double? = null,
+
+	@field:SerializedName("collectionHdPrice")
+	val collectionHdPrice: Double? = null,
+
+	@field:SerializedName("trackHdPrice")
+	val trackHdPrice: Double? = null,
+
+	@field:SerializedName("contentAdvisoryRating")
+	val contentAdvisoryRating: String? = null,
+
+	@field:SerializedName("trackRentalPrice")
+	val trackRentalPrice: Double? = null,
+
+	@field:SerializedName("shortDescription")
+	val shortDescription: String? = null,
+
+	@field:SerializedName("collectionArtistId")
+	val collectionArtistId: Int? = null,
+
+	@field:SerializedName("collectionArtistViewUrl")
+	val collectionArtistViewUrl: String? = null,
+
+	@field:SerializedName("hasITunesExtras")
+	val hasITunesExtras: Boolean? = null
 )

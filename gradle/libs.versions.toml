@@ -25,14 +25,18 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 
 # Test
-mockitoCore = "3.12.4"
+mockitoCore = "4.5.1"
 mockitoKotlin = "4.0.0"
 mockitoInline = "3.12.4"
 
-coroutinesTest = "1.7.0"
-testing = "2.1.0"
-turbine = "1.0.0"
-jupiter = "5.8.2"
+mockk="1.12.0"
+kotlinmockk="4.0.0"
+jupiterengine="5.7.0"
+
+coroutinesTest = "1.6.0"
+testing = "2.2.0"
+turbine = "0.12.0"
+jupiter = "5.7.0"
 
 # Lifecycle
 lifecyclecommon = "1.1.1"
@@ -73,12 +77,17 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockito-core = { group = "org.mockito:mockito-core", name = "mockito-core", version.ref = "mockitoCore" }
 mockito-kotlin = { group = "org.mockito.kotlin:mockito-kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mockito-inline = { group = "org.mockito:mockito-inline", name = "mockito-inline", version.ref = "mockitoInline" }
-coroutines-test = { group = "org.jetbrains.kotlinx:kotlinx-coroutines-test", name = "coroutines-test", version.ref = "coroutinesTest" }
 testing = { group = "androidx.arch.core:core-testing", name = "testing", version.ref = "testing" }
-jupiter = { group = "org.junit.jupiter:junit-jupiter-api", name = "jupiter", version.ref = "jupiter" }
-androidx-turbine = { group = "app.cash.turbine:turbine", name = "junit", version.ref = "turbine" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+coroutines-test = { group = "org.jetbrains.kotlinx:kotlinx-coroutines-test", name = "coroutines-test", version.ref = "coroutinesTest" }
+mockk = { group = "io.mockk:mockk", name = "mockk", version.ref = "mockk" }
+kotlin-mockk = { group = "org.mockito.kotlin:mockk", name = "kotlin-mockk", version.ref = "kotlinmockk" }
+androidx-turbine = { group = "app.cash.turbine:turbine", name = "junit", version.ref = "turbine" }
+jupiter = { group = "org.junit.jupiter:junit-jupiter-api", name = "jupiter", version.ref = "jupiter" }
+jupiter-engine = { group = "org.junit.jupiter:junit-jupiter-engine", name = "jupiter-engine", version.ref = "jupiterengine" }
+
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }

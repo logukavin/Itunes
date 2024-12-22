@@ -11,6 +11,7 @@ import com.sample.itunes.R
 import com.sample.itunes.databinding.ActivitySplashBinding
 import com.sample.itunes.ui.base.BaseActivity
 import com.sample.itunes.ui.dashboard.DashBoardActivity
+import com.sample.itunes.ui.search.SearchActivity
 import com.sample.itunes.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private suspend fun findLoading() {
         splashViewModel.isLoading.collect { isLoading ->
             if (isLoading) {
-                val intent = Intent(this@SplashActivity, DashBoardActivity::class.java)
+                val intent = Intent(this@SplashActivity, SearchActivity::class.java)
                 startActivity(intent)
                 finish()
             }

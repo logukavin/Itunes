@@ -28,6 +28,13 @@ object CommonUI {
     fun View.showGone() {
         this.visibility = View.GONE
     }
+    fun View.showInvisible() {
+        this.visibility = View.INVISIBLE
+    }
+
+    fun getFileExtension(url: String): String? {
+        return url.substringAfterLast('.', "").takeIf { it.isNotEmpty() }
+    }
 
     // Check for common root files
     fun isRooted(): Boolean {

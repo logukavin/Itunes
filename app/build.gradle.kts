@@ -74,6 +74,9 @@ dependencies {
     testImplementation(libs.androidx.turbine)
     testImplementation(libs.jupiter)
     testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.mockk)
+    testImplementation(libs.jupiter.engine)
 
     // Lifecycle
     implementation(libs.lifecycle.common)
