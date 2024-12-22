@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.airbnb.lottie.LottieDrawable
 import com.sample.itunes.R
 import com.sample.itunes.databinding.ActivitySplashBinding
@@ -14,6 +15,7 @@ import com.sample.itunes.ui.dashboard.DashBoardActivity
 import com.sample.itunes.ui.search.SearchActivity
 import com.sample.itunes.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 

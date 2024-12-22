@@ -3,7 +3,9 @@ package com.sample.itunes.ui.grid
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.Gson
 import com.sample.itunes.R
 import com.sample.itunes.databinding.FragmentGridBinding
 import com.sample.itunes.model.ChildItem
