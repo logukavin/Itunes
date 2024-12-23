@@ -27,43 +27,74 @@ class DescriptionDetailsActivity : BaseActivity<ActivityDescriptionDetailsBindin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.commonLayout.tvTitle.text = getString(R.string.media)
-        binding.commonLayout.imgBack.setOnClickListener { finish() }
-
-        val collectionName = intent.getStringExtra(AppConstants.COLLECTION_NAME)
-        val artistName = intent.getStringExtra(AppConstants.ARTIST_NAME)
+        initializeUI()
+        val collectionName = intent.getStringExtra(AppConstants.COLLECTION_NAME) ?: ""
+        val artistName = intent.getStringExtra(AppConstants.ARTIST_NAME) ?: ""
         val previewUrl = intent.getStringExtra(AppConstants.PREVIEW_URL)
-        val primaryGenreName = intent.getStringExtra(AppConstants.PRIMARY_GENRE_NAME)
-        val longDescription = intent.getStringExtra(AppConstants.LONG_DESCRIPTION)
-        val artworkUrl = intent.getStringExtra(AppConstants.ART_WORK_URL)
+        val primaryGenreName = intent.getStringExtra(AppConstants.PRIMARY_GENRE_NAME) ?: ""
+        val longDescription = intent.getStringExtra(AppConstants.LONG_DESCRIPTION) ?: ""
+        val artworkUrl = intent.getStringExtra(AppConstants.ART_WORK_URL) ?: ""
 
-        binding.imgMovie.loadUrl(artworkUrl)
         binding.tvName.text = collectionName
         binding.tvArtistName.text = artistName
         binding.tvAction.text = primaryGenreName
         binding.tvDesDetail.text = longDescription
 
+        binding.imgMovie.loadUrl(artworkUrl)
+        setupPreview(previewUrl, artworkUrl)
+    }
+
+    private fun initializeUI() {
+        binding.commonLayout.tvTitle.text = getString(R.string.description)
+        binding.commonLayout.imgBack.setOnClickListener { finish() }
+    }
+
+    private fun setupPreview(previewUrl: String?, artworkUrl: String) {
         if (previewUrl.isNullOrEmpty()) {
             binding.videoView.showGone()
             binding.tvPreview.showGone()
         } else {
-            binding.tvPreview.showVisible()
-            binding.videoView.showVisible()
             val extension = getFileExtension(previewUrl)
 
-            if (extension == "m4v" || extension == "mp4") {
-                val uri = Uri.parse(previewUrl)
-                binding.videoView.setVideoURI(uri)
-                binding.videoView.start()
+            binding.tvPreview.showVisible()
+            binding.videoView.showVisible()
 
-                val mediaController = MediaController(this)
-                mediaController.setAnchorView(binding.videoView)
-                binding.videoView.setMediaController(mediaController)
+            if (isVideoFormat(extension!!)) {
+                playVideo(previewUrl)
             } else {
-                binding.videoView.showGone()
-                binding.imgThumbnail.showVisible()
-                binding.imgThumbnail.loadUrl(artworkUrl)
+                showImagePreview(artworkUrl)
             }
         }
+    }
+
+    private fun isVideoFormat(extension: String): Boolean {
+        return listOf("m4v", "mp4", "avi", "mov", "webm").contains(extension)
+    }
+
+    private fun playVideo(previewUrl: String) {
+        val uri = Uri.parse(previewUrl)
+        binding.videoView.setVideoURI(uri)
+        binding.videoView.start()
+
+        val mediaController = MediaController(this).apply {
+            setAnchorView(binding.videoView)
+        }
+        binding.videoView.setMediaController(mediaController)
+    }
+
+    private fun showImagePreview(artworkUrl: String) {
+        binding.videoView.showGone()
+        binding.imgThumbnail.showVisible()
+        binding.imgThumbnail.loadUrl(artworkUrl)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.videoView.pause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.videoView.stopPlayback()
     }
 }

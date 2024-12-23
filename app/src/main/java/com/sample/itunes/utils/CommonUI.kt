@@ -2,13 +2,21 @@ package com.sample.itunes.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Base64
 import android.view.View
 import android.widget.Toast
 import com.sample.itunes.application.AppController
 import com.sample.itunes.application.AppController.Companion.appContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+import java.net.URL
+import java.security.MessageDigest
+import java.security.PublicKey
+import java.security.cert.X509Certificate
+import javax.net.ssl.HttpsURLConnection
 
 object CommonUI {
 
@@ -77,6 +85,25 @@ object CommonUI {
             }
         }
         return false
+    }
+
+
+    suspend fun generatePublicKeyHashFromServer(url: String): String? {
+        return try {
+            withContext(Dispatchers.IO) {
+                val connection = URL(url).openConnection() as HttpsURLConnection
+                connection.connect()
+                val cert: X509Certificate = connection.serverCertificates[0] as X509Certificate
+                val publicKey: PublicKey = cert.publicKey
+                val digest = MessageDigest.getInstance("SHA-256")
+                val publicKeyBytes = publicKey.encoded
+                val hashedPublicKey = digest.digest(publicKeyBytes)
+                "sha256/" + Base64.encodeToString(hashedPublicKey, Base64.NO_WRAP)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
 }
