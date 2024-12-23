@@ -21,7 +21,7 @@ class AppPreference @Inject constructor(context: Context) {
 
     companion object {
         private const val PREFERENCE_NAME = "APP_PREFERENCE"
-        private val USERTOKEN = stringPreferencesKey("UserToken")
+        private val TERM = stringPreferencesKey("Term")
         private val USERLISTVALUES = stringSetPreferencesKey("UserListValue")
 
     }
@@ -40,9 +40,9 @@ class AppPreference @Inject constructor(context: Context) {
         }
     }
 
-    /*----------------------------------------------- Get Token -----------------------------------------------*/
+    /*----------------------------------------------- Get Term -----------------------------------------------*/
 
-    val getToken: Flow<String>
+    val getTerm: Flow<String>
         get() = dataStore.data.catch {
             if (it is IOException) {
                 it.printStackTrace()
@@ -51,38 +51,28 @@ class AppPreference @Inject constructor(context: Context) {
                 throw it
             }
         }.map { preference ->
-            (preference[USERTOKEN] ?: "").toString()
+            (preference[TERM] ?: "").toString()
         }
 
 
-    suspend fun setToken(token: String) {
+    suspend fun setTerm(token: String) {
         dataStore.edit { preference ->
-            preference[USERTOKEN] = token
+            preference[TERM] = token
         }
     }
 
-//    var getOverallValue: Flow<String> = dataStore.data.map {
-//        it[USERLISTVALUES] ?: ""
-//    }
-//
-//    suspend fun setOverAllValues(listName: String) {
-//        dataStore.edit {
-//            it[USERLISTVALUES] = listName
-//        }
-//    }
-
-
+    /*----------------------------------------------- Get MediaList -----------------------------------------------*/
 
     suspend fun saveListToDataStore(dataList: List<String>) {
         dataStore.edit { preferences ->
-            preferences[USERLISTVALUES] = dataList.toSet() // Convert List to Set
+            preferences[USERLISTVALUES] = dataList.toSet()
         }
     }
 
     fun getListFromDataStore(): Flow<Set<String>> {
         return dataStore.data
             .map { preferences ->
-                preferences[USERLISTVALUES] ?: emptySet() // Default to empty set if the key doesn't exist
+                preferences[USERLISTVALUES] ?: emptySet()
             }
     }
 

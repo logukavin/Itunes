@@ -39,6 +39,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>() {
         super.onCreate(savedInstanceState)
 
         binding.commonLayout.tvTitle.text=ContextCompat.getString(this,R.string.itunes)
+        binding.commonLayout.imgBack.setOnClickListener { finish() }
         binding.tvGrid.setOnClickListener { onTextClicked(it, getString(R.string.grid_layout)) }
         binding.tvList.setOnClickListener { onTextClicked(it, getString(R.string.list_layout)) }
         getPublicKeyHash()

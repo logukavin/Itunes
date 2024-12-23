@@ -43,7 +43,7 @@ class MediaActivity : BaseActivity<ActivityMediaBinding>() {
         lifecycleScope.launch {
             mediaViewModel.updateSearchName(searchName.toString())
         }
-
+        binding.commonLayout.imgBack.setOnClickListener { finish() }
         lifecycleScope.launch {
             mediaViewModel.searchResponse.collect { state ->
                 when (state) {
@@ -83,19 +83,10 @@ class MediaActivity : BaseActivity<ActivityMediaBinding>() {
                 mediaType.add(item.name)
             }
             lifecycleScope.launch {
-                Log.v("asdfghjk",mediaType.size.toString())
                 appPreference.saveListToDataStore(mediaType)
             }
 
             val intent = Intent(AppController.appContext, DashBoardActivity::class.java)
-            /*.apply {
-                intent.putExtra(AppConstants.COLLECTION_NAME,"")
-                intent.putExtra(AppConstants.ARTIST_NAME,"")
-                intent.putExtra(AppConstants.PREVIEW_URL,"")
-                intent.putExtra(AppConstants.PRIMARY_GENRE_NAME,"")
-                intent.putExtra(AppConstants.LONG_DESCRIPTION,"")
-                intent.putExtra(AppConstants.ART_WORK_URL,"")
-            }*/
             startActivity(intent)
 
         }

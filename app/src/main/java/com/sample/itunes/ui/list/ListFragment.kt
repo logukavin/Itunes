@@ -62,7 +62,7 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
 
                         for (i in state.data.results!!) {
                             val childItem = ChildItem(
-                                i!!.collectionCensoredName.toString(),i.artistName.toString(),i.previewUrl.toString(),i.primaryGenreName.toString(),i.longDescription.toString(), i.artworkUrl100.toString()
+                                i!!.collectionCensoredName.toString(),i.artistName.toString(),i.previewUrl.toString(),i.primaryGenreName.toString(),i.description.toString(), i.artworkUrl100.toString()
                             )
 
                             val parentKind = i.kind.takeIf { !it.isNullOrEmpty() } ?: i.wrapperType

@@ -29,7 +29,8 @@
         <activity android:name=".ui.dashboard.DashBoardActivity"/>
         <activity android:name=".ui.media.MediaActivity"/>
         <activity android:name=".ui.description.DescriptionDetailsActivity"/>
-        <activity android:name=".ui.search.SearchActivity"/>
+        <activity android:name=".ui.search.SearchActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan"/>
     </application>
 
 </manifest>

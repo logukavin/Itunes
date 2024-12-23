@@ -6,7 +6,7 @@ object ApiConstants {
     const val API_SEARCH = "search"
 
     const val TERM="term"
-    const val MEDIA="media"
+    const val ENTITY="entity"
     const val LIMIT="limit"
 
 

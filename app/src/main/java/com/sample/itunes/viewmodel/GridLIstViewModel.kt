@@ -15,6 +15,7 @@ import com.sample.itunes.preferences.AppPreference
 import com.sample.itunes.ui.base.BaseViewModel
 import com.sample.itunes.ui.base.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,27 +33,28 @@ class GridLIstViewModel @Inject constructor(
 
     private val _allResponse = MutableStateFlow<UIState<AllResponse>>(UIState.Loading)
     val allResponse: StateFlow<UIState<AllResponse>> = _allResponse
-//    lateinit var context: Context
-//    lateinit var appPreference: AppPreference
-
-    private var mediaTypes = listOf<String>()
-    private var originalList = mutableListOf<String>()
+    private var mediaTypes = mutableListOf<String>()
+    private var term:String?=null
 
     init {
-//        appPreference = AppPreference(context)
-        getSearchDetailsSequentially()
-        getLocalDataValues()
+        viewModelScope.launch {
+            getLocalDataValues()
+            delay(3000)
+            getSearchDetailsSequentially()
+        }
+
     }
 
-    private fun getLocalDataValues() {
-
+    private suspend fun getLocalDataValues() {
         viewModelScope.launch {
             appPreference.getListFromDataStore().collect { dataList ->
-                println("Data from DataStore: $dataList")
-//                mediaTypes = dataList as List<String>
-                originalList.addAll(dataList)
-                Log.e("ListViewModel", originalList.size.toString())
+                mediaTypes.addAll(dataList)
+            }
+        }
 
+        viewModelScope.launch {
+            appPreference.getTerm.collect{
+                term=it
             }
         }
 
@@ -70,9 +72,9 @@ class GridLIstViewModel @Inject constructor(
             val allResults = mutableListOf<ResultsItems>()
 
             try {
-                for (mediaType in originalList) {
+                for (mediaType in mediaTypes) {
                     try {
-                        val result = appRepo.getListDeatils("jack+johnson", mediaType)
+                        val result = appRepo.getListDeatils(term?:"", mediaType)
                             .flowOn(dispatcherProvider.io)
                             .catch { exception ->
                                 Log.e(

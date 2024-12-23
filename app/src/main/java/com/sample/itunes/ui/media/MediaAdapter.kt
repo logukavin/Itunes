@@ -34,8 +34,11 @@ class MediaAdapter : RecyclerView.Adapter<MediaAdapter.MediaViewHolder>() {
         fun bind(mediaOption: MediaOption) {
             view.tvName.text = mediaOption.name
             view.checkBox.isChecked = mediaOption.isSelected
+            view.checkBox.setOnCheckedChangeListener(null)
+            view.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                mediaOption.isSelected=isChecked
+            }
             itemView.setOnClickListener {
-                // Toggle selection when clicked
                 mediaOption.isSelected = !mediaOption.isSelected
                 view.checkBox.isChecked = mediaOption.isSelected
             }

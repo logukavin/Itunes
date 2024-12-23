@@ -15,8 +15,10 @@ import com.sample.itunes.ui.dashboard.DashBoardActivity
 import com.sample.itunes.ui.search.SearchActivity
 import com.sample.itunes.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @SuppressLint("CustomSplashScreen")
@@ -55,12 +57,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     private suspend fun findDeviceRooted() {
         splashViewModel.isDeviceRooted.collect { isRooted ->
-            val message = if (isRooted) {
-                getString(R.string.your_device_is_rooted)
-            } else {
-                getString(R.string.device_is_not_rooted)
+            withContext(Dispatchers.Main) {
+                val message = if (isRooted) {
+                    getString(R.string.your_device_is_rooted).also {
+                        finish()
+                    }
+                } else {
+                    getString(R.string.device_is_not_rooted)
+                }
+                showToast(message)
             }
-            showToast(message)
         }
     }
+
 }

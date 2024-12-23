@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = libs.versions.nameSpace.get()
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = libs.versions.nameSpace.get()
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
         vectorDrawables.useSupportLibrary = true
@@ -56,7 +56,7 @@ android {
 
 dependencies {
 
-//    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)

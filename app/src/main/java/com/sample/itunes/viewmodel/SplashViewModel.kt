@@ -29,13 +29,15 @@ private val networkHelper: NetworkHelper
 
     init {
         checkDeviceRootStatus()
-        startLoadingProcess()
     }
 
     private fun checkDeviceRootStatus() {
         viewModelScope.launch(dispatcherProvider.io) {
             val isRooted = CommonUI.isRooted()
             _isDeviceRooted.value = isRooted
+            if (!isRooted){
+                startLoadingProcess()
+            }
         }
     }
 
